@@ -1,16 +1,16 @@
 {
-  "name": "Vusi Long V10",
-  "short_name": "V10 Long",
-  "start_url": "./",
-  "scope": "./",
+  "name": "MAKHANANI LOGISTICS - 12 Routes National + Limpopo",
+  "short_name": "MAKHANANI",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0A1931",
-  "theme_color": "#0A1931",
+  "background_color": "#0f5d2f",
+  "theme_color": "#0f5d2f",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3774/3774083.png",
+      "src": "./icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
