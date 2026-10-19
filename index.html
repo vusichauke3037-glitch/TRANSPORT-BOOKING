@@ -1,222 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>V10 WA Business API Auto Ticket APK</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V10 Long - MAKHANANI LOGISTICS | 12 National + Limpopo Routes</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<meta name="theme-color" content="#0f5d2f">
 <style>
-:root{--blue:#0A1931;--green:#00C27A;--yellow:#FFD600;--bg:#F6F8FF;--red:#FF3B30;--wa:#25D366}
-*{box-sizing:border-box;font-family:Arial}body{margin:0;background:var(--bg)}
-header{background:var(--blue);color:#fff;padding:6px;text-align:center;position:sticky;top:0;z-index:20}
-.card{background:#fff;border-radius:12px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);margin:5px}
-.btn{background:var(--blue);color:#fff;border:0;padding:7px 10px;border-radius:16px;font-weight:800;margin:2px;font-size:10px;cursor:pointer}
-.btn-g{background:var(--green)}.btn-y{background:var(--yellow);color:#222}.btn-r{background:var(--red)}.btn-wa{background:var(--wa);color:#fff}
-.badge{padding:3px 7px;border-radius:9px;font-size:9px;font-weight:800}
-.owner{background:#0A1931;color:#FFD600}.driver{background:#00C27A;color:#fff}
-input,select{width:100%;padding:6px;border-radius:7px;border:1px solid #ccc;margin:2px 0;font-size:12px}
-.row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #eee;gap:4px;flex-wrap:wrap;font-size:11px}
-.seat{width:22px;height:22px;border-radius:4px;border:2px solid #0A1931;display:inline-flex;align-items:center;justify-content:center;margin:1px;font-weight:800;cursor:pointer;font-size:8px}
-.seat.booked{background:#FF3B30;color:#fff}.seat.free{background:#fff}.seat.selected{background:#00C27A;color:#fff}.seat.vip{background:#FFF8D6;border-color:#FFD600}.seat.boarded{background:#0A1931;color:#FFD600}.seat.paid{background:#00C27A;color:#fff}
-.qr-box{width:70px;height:70px;margin:auto}
-.wa{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:10px;padding:8px}
-.apk{background:linear-gradient(135deg,#0A1931,#3DDC84);color:#fff;border-radius:10px;padding:8px}
-.mode-switch{display:flex;justify-content:center;gap:3px;margin:3px 0}
+:root{--g:#0f5d2f;--gold:#d4af37;--bg:#f5f7f5;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{background:var(--bg);color:#111}
+header{background:var(--g);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
+header b{color:var(--gold)}
+.tabs{display:flex;gap:6px;padding:10px;background:#fff;position:sticky;top:56px;z-index:98;overflow:auto}
+.tabs button{padding:10px 14px;border:2px solid var(--g);border-radius:20px;background:#fff;font-weight:700;white-space:nowrap}
+.tabs button.active{background:var(--g);color:#fff}
+.container{padding:12px;max-width:1100px;margin:auto}
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+h2{margin-bottom:8px;color:var(--g)}
+.seats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0}
+.seat{padding:10px 0;border-radius:8px;border:2px solid #ccc;text-align:center;font-weight:800;cursor:pointer}
+.seat.free{background:#e8f5e9;border-color:#4caf50}
+.seat.booked{background:#ffcdd2;border-color:#e53935;color:#900;text-decoration:line-through}
+.seat.selected{background:var(--gold);border-color:#000}
+.route-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.route-card{border:2px solid var(--g);border-radius:12px;padding:12px;background:#fff;cursor:pointer}
+.route-card.active{border-color:var(--gold);background:#fffbe6}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;background:var(--g);color:#fff;font-size:11px;margin-right:4px}
+.badge-gold{background:var(--gold);color:#000}
+input,select,button{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;margin:6px 0}
+.btn{background:var(--g);color:#fff;font-weight:800;border:none;padding:12px}
+.btn-gold{background:var(--gold);color:#000}
+.flex{display:flex;gap:8px}
+.hidden{display:none}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
+.pro{border:2px dashed var(--gold);background:#fffde7}
+.calc{border:2px solid var(--g);background:#e8f5e9;border-radius:12px;padding:10px;margin:8px 0}
 </style>
 </head>
 <body>
 <header>
-<h3 style="margin:1px 0;font-size:11px">V10 WA BUSINESS API 💬 AUTO TICKET 🎫 DRIVER APK 📱 - FINAL</h3>
-<div class="mode-switch"><button id="ownerBtn" class="owner" onclick="setMode('owner')" style="padding:6px 9px">👑 OWNER</button><button id="driverBtn" style="background:#fff;color:#0A1931;padding:6px 9px" onclick="setMode('driver')">👨‍✈️ DRIVER</button><button id="paxBtn" style="background:#fff;color:#0A1931;padding:6px 9px" onclick="setMode('passenger')">🧑 PAX</button><button id="installBtn" style="display:none;background:#3DDC84;color:#000;padding:6px 9px;border-radius:16px;border:0;font-weight:800" onclick="installAPK()">📱 Install APK</button></div>
-<input id="opName" placeholder="Operator" style="max-width:80px"><input id="driverCode" placeholder="Bus Reg" style="max-width:60px"><button class="btn btn-y" onclick="saveOp()">Save</button>
-<input id="lic" placeholder="PRO-2026-VUSI" style="max-width:70px;padding:3px;border-radius:6px;border:0"><button class="btn btn-g" onclick="unlock()">Unlock</button> <span id="badge" class="badge owner">V10</span> <button class="btn" style="background:#fff;color:#0A1931" onclick="getGPS()">📍</button>
-<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1px;margin-top:2px">
-<button class="btn btn-y" onclick="showTab('book')">🎫 Book</button>
-<button class="btn" onclick="showTab('pay')" style="background:#00C27A;color:#fff">⚡ PAY</button>
-<button class="btn-wa" onclick="showTab('wa')">💬 WA API</button>
-<button class="btn" onclick="showTab('apk')" style="background:#3DDC84;color:#000">📱 APK</button>
-<button class="btn" onclick="showTab('receipt')" style="background:#FFD600;color:#000">🧾 Receipt</button>
-<button class="btn" onclick="showTab('sars')" style="background:#0A1931;color:#FFD600">📊 SARS</button>
-</div>
+<div><b>V10 Long</b> - <span id="opName">MAKHANANI LOGISTICS</span><br><small style="font-size:11px">12 Routes • N1 Toll • Fuel Auto • PayShap/Ozow/Paystack</small></div>
+<div style="text-align:right"><small>Operator</small><br><input id="opInput" value="MAKHANANI LOGISTICS" style="width:160px;padding:4px" onchange="saveOp()"></div>
 </header>
-
-<div id="bookTab" class="card">
-<h4 id="bookTitle">Book V10 - <span id="biz">Operator</span> | <span id="gpsShow">-</span></h4>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-<div><label>Bus</label><select id="busSel"></select><label>Route</label><select id="routeSel"></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><div><label>Date</label><input id="depDate" type="date"></div><div><label>Time</label><select id="depTime"><option>05:00</option><option>18:00</option><option>20:00</option><option>22:00</option></select></div></div><div class="card" style="padding:3px"><div id="seatMap"></div></div></div>
-<div><label>Name</label><input id="pName"><label>ID</label><input id="pId"><div style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><div><label>Phone (WA)</label><input id="pPhone" placeholder="277... WA number"></div><div><label>Bags</label><select id="pBags"><option>1</option><option>2</option></select></div></div><label>Pickup</label><select id="pPickup"></select>
-<div style="background:#FFF8D6;border-radius:6px;padding:3px"><label><input type="checkbox" id="insCheck" checked onchange="updatePrice()"> 🛡️ Ins R5</label> <label><input type="checkbox" id="vatCheck" checked onchange="updatePrice()"> VAT</label> <label><input type="checkbox" id="waAutoCheck" checked> 💬 Auto WA Ticket</label></div>
-<div style="text-align:center"><input type="file" id="photoInput" accept="image/*" capture="user" style="display:none" onchange="handlePhoto(this)"><button class="btn btn-y" onclick="document.getElementById('photoInput').click()">📸 Photo</button><div id="photoPreview"></div></div>
-<h4>R<span id="priceLabel">0</span> <small id="priceBreak"></small></h4>
-<button class="btn btn-g" style="width:100%;padding:8px" onclick="book()">BOOK + AUTO WA TICKET</button><div id="qrPreview" class="qr-box"></div></div>
+<div class="tabs">
+<button class="active" onclick="tab('book')">🎫 PAX BOOK</button>
+<button onclick="tab('pay')">💳 PAY</button>
+<button onclick="tab('driver')">🚌 DRIVER</button>
+<button onclick="tab('owner')">👑 OWNER</button>
+<button onclick="tab('routes')">🗺️ ROUTES</button>
 </div>
-<div id="recent"></div>
+<div class="container">
+<div id="t-book" class="card">
+<h2>🎫 Book Seat - 12 National Routes + Limpopo 4</h2>
+<div id="routeList" class="route-grid"></div>
+<div id="routeCalc" class="calc"></div>
+<label>Pick Seat (Red = Booked 6 & 7)</label>
+<div id="seatGrid" class="seats"></div>
+<div class="flex"><input id="paxName" placeholder="Passenger Name"><input id="paxPhone" placeholder="WhatsApp: 27..." type="tel"></div>
+<input id="paxFromTo" readonly>
+<div class="flex"><button class="btn" onclick="bookSeat()">📲 Book & Create Pay Link</button><button class="btn-gold" onclick="clearSel()">Clear</button></div>
 </div>
-
-<div id="payTab" style="display:none;padding:4px">
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
-<div class="card" style="background:#00C27A;color:#fff"><h4>⚡ PayShap</h4><input id="payshapId" placeholder="PayShap ID"><div id="payshapDetails" style="background:#fff;color:#000;border-radius:6px;padding:4px;margin:3px 0;font-size:10px"></div><button class="btn btn-y" style="width:100%" onclick="createPayshap()">Create PayShap</button><button class="btn" style="background:#fff;color:#00C27A;width:100%" onclick="simulatePayshapPaid()">Sim Paid Auto WA</button><div id="payshapQR" class="qr-box"></div></div>
-<div class="card" style="background:#000;color:#00FF00"><h4>🔵 Ozow</h4><input id="ozowKey" placeholder="Ozow key demo"><div id="ozowDetails" style="background:#222;color:#00FF00;border-radius:6px;padding:4px;margin:3px 0;font-size:10px"></div><button class="btn" style="background:#00FF00;color:#000;width:100%" onclick="createOzow()">Create Ozow</button><button class="btn btn-y" style="width:100%" onclick="simulateOzowPaid()">Sim Paid Auto WA</button><div id="ozowQR" class="qr-box"></div></div>
-<div class="card" style="background:#00C7F7;color:#fff"><h4>💳 Paystack</h4><input id="paystackKey" placeholder="Paystack demo"><div id="paystackDetails" style="background:#fff;color:#000;border-radius:6px;padding:4px;margin:3px 0;font-size:10px"></div><button class="btn" style="background:#fff;color:#00C7F7;width:100%" onclick="createPaystack()">Create Paystack</button><button class="btn btn-y" style="width:100%" onclick="simulatePaystackPaid()">Sim Paid Auto WA</button><div id="paystackQR" class="qr-box"></div></div>
+<div id="t-pay" class="card hidden"><h2>💳 PayShap / Ozow / Paystack - Auto PAID</h2><div id="payInfo"></div><input id="payLink" readonly><div class="flex"><button class="btn" onclick="copyPay()">Copy Link</button><button class="btn-gold" onclick="sendWA()">Send WhatsApp Ticket</button></div><button class="btn" style="margin-top:8px;background:#000" onclick="simPaid()">✅ Simulate Paid → Auto Ticket</button><div id="ticketBox" class="pro card hidden"></div></div>
+<div id="t-driver" class="card hidden"><h2>🚌 Driver Mode - N1 Toll + Fuel Calculator - Offline Karoo!</h2><input id="drvName" value="Driver - Makhanani"><input id="busReg" value="ND 456 GP"><div class="flex"><button class="btn" onclick="startTrip()">▶️ Start Trip - Show Fuel/Toll/Profit</button><button class="btn-gold" onclick="exportCSV()">Export CSV</button></div><table id="drvTable"></table><small>N1 Toll gates: Pumulani R27, Carousel R33, Kranskop R42, Nyl R48</small></div>
+<div id="t-owner" class="card hidden"><h2>👑 Owner - MAKHANANI LOGISTICS</h2><div class="flex"><div class="card" style="flex:1"><b id="totalRev">R0</b><br><small>Revenue</small></div><div class="card" style="flex:1"><b id="totalProfit">R0</b><br><small>Profit (Fuel+Toll)</small></div><div class="card" style="flex:1"><b id="totalSeats">0/360</b><br><small>Booked</small></div></div><input id="vat" value="15" type="number"><button class="btn" onclick="calcSARS()">📊 SARS VAT Report with Fuel & Toll</button><div id="sarsBox" class="card hidden"></div><table id="ownerTable"></table></div>
+<div id="t-routes" class="card hidden"><h2>🗺️ 12 National Routes</h2><ul style="margin:10px 18px;line-height:1.9"><li>JHB → Durban R560 • 570km</li><li>JHB → Cape Town R1250 • 1400km</li><li>JHB → Port Elizabeth R980</li><li>JHB → Lusikisiki R950</li><li>JHB → Polokwane R350</li><li>JHB → Nelspruit R380</li><li>JHB → Rustenburg R280</li><li>JHB → Bloemfontein R450</li><li>🔥 JHB → Giyani R420 • 530km Toll R110</li><li>🔥 JHB → Malamulele R450 • 560km Toll R120</li><li>🔥 JHB → Thohoyandou R480 • 520km Toll R115</li><li>🔥 JHB → Tzaneen R400 • 420km Toll R95</li></ul><button class="btn" onclick="tab('book')">Book Any Route Now</button></div>
 </div>
-<div class="card"><h4>Pay Links - Auto WA Ticket when Paid</h4><div id="payLinks"></div><div id="autoPaidList"></div></div>
-</div>
-
-<div id="waTab" style="display:none;padding:4px">
-<div class="card wa"><h3>💬 WhatsApp Business API - Auto Ticket</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-<div style="background:#fff;color:#000;border-radius:8px;padding:6px"><h4>WA Business API Setup (Owner)</h4><label>WA Business Phone ID</label><input id="waPhoneId" placeholder="1234567890"><label>WA Access Token</label><input id="waToken" placeholder="EAA..."><label>WA Template Name</label><input id="waTemplate" placeholder="bus_ticket_v10"><label>Webhook URL (for auto confirm)</label><input id="waWebhook" placeholder="https://yourdomain.com/webhook"><button class="btn-wa" style="width:100%" onclick="saveWA()">Save WA API</button><small>Demo mode works without API - uses wa.me fallback + auto ticket</small><div style="margin-top:6px;background:#E6FFE6;padding:4px;border-radius:6px"><b>Auto WA Flow:</b><br>1. Pax pays PayShap/Ozow<br>2. System auto marks PAID<br>3. Auto sends WA: Ticket PDF + QR + Map + Receipt<br>4. Driver gets WA: New booking Seat 5</div></div>
-<div style="background:#fff;color:#000;border-radius:8px;padding:6px"><h4>Auto WA Ticket Preview</h4><div id="waPreview" style="background:#DCF8C6;padding:6px;border-radius:8px;font-size:11px"></div><label>Test WA Number</label><input id="waTestPhone" placeholder="277..."><button class="btn-wa" style="width:100%" onclick="sendWATest()">💬 Send Test WA Ticket (wa.me)</button><button class="btn btn-g" style="width:100%" onclick="sendWAAuto()">💬 Send Auto WA via Business API (Real)</button><div id="waLog" style="margin-top:6px;background:#f0f0f0;padding:4px;border-radius:6px;max-height:150px;overflow:auto;font-size:10px"></div></div>
-</div></div>
-<div class="card"><h4>WA Sent Log</h4><div id="waSentList"></div></div>
-</div>
-
-<div id="apkTab" style="display:none;padding:4px">
-<div class="card apk"><h3>📱 DRIVER APP APK - Install as Native App (PWA)</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-<div style="background:#fff;color:#000;border-radius:8px;padding:8px"><h4>How to Install APK on Android</h4><ol style="font-size:12px"><li>Open this site in Chrome on Android</li><li>Click <b>📱 Install APK</b> button top (or Chrome menu → Install App)</li><li>App icon appears on home screen: <b>Vusi Long V10</b> 🚌</li><li>Open like normal app - works offline!</li><li>Driver mode - no browser bar, full screen</li></ol><button id="installBtn2" class="btn" style="background:#3DDC84;color:#000;width:100%;padding:12px" onclick="installAPK()">📱 Install Driver APK Now</button><div id="apkStatus" style="margin-top:6px;background:#E6FFE6;padding:6px;border-radius:6px;font-size:11px"></div></div>
-<div style="background:#fff;color:#000;border-radius:8px;padding:8px"><h4>PWA Files (Already included)</h4><div style="font-size:11px;background:#f0f0f0;padding:6px;border-radius:6px"><b>manifest.json</b><br>{<br>"name":"Vusi Long V10",<br>"short_name":"V10 Long",<br>"start_url":"/?v=10",<br>"display":"standalone",<br>"background_color":"#0A1931",<br>"icons":[{"src":"icon-512.png",...}]<br>}<br><br><b>sw.js</b> - Service Worker for offline<br>Cache all bookings, maps, QR offline<br>Works in Karoo with no signal</div><button class="btn btn-g" style="width:100%" onclick="checkPWA()">Check PWA Status</button><h4>Driver APK Features</h4><ul style="font-size:11px"><li>✅ Icon on home screen</li><li>✅ Full screen, no browser</li><li>✅ Offline - no internet needed</li><li>✅ Push notifications (future)</li><li>✅ Auto update when online</li></ul></div>
-</div></div>
-<div class="card"><h4>Convert to Real APK (AAB for Play Store)</h4><small>1. Use PWABuilder.com → Enter your URL https://vusichauke3037-glitch.github.io/transport-long/?v=10 → Build APK/AAB<br>2. Or use Bubblewrap: npx @bubblewrap/cli init --manifest https://.../manifest.json → bubblewrap build<br>3. Upload AAB to Google Play Console → Driver app in Play Store<br>4. Cost: R0 PWA, R3k Play Store listing</small></div>
-</div>
-
-<div id="receiptTab" style="display:none;padding:4px"><div class="card"><h3>🧾 Receipt</h3><select id="receiptBookingSel"></select><div id="receiptPreview" style="border:2px dashed #0A1931;padding:6px;border-radius:8px;background:#FFFBE6"></div><button class="btn btn-g" style="width:100%" onclick="genReceiptPDF()">PDF Receipt</button><div id="receiptList"></div></div></div>
-<div id="sarsTab" style="display:none;padding:4px"><div class="card" style="background:#FFD600"><h3>📊 SARS Tax</h3><input id="sarsMonth" type="month"><button class="btn" style="background:#0A1931;color:#FFD600;width:100%" onclick="genSARS()">Gen SARS</button><div id="sarsSummary"></div><div id="sarsBreak"></div><div id="vatCalc"></div><button class="btn btn-g" style="width:100%" onclick="pdfSARS()">PDF SARS</button><button class="btn btn-y" style="width:100%" onclick="csvSARS()">CSV</button><div id="yearlySummary"></div></div></div>
-
 <script>
-let op=localStorage.getItem("longOp")||"Vusi Long", lic=localStorage.getItem("proLicense")||"", isPro=false, selSeat=null, passengerPhoto="", eftProofPhoto="", currentGPS="", lastBooking=null, mode=localStorage.getItem("appMode")||"owner", driverPositions=JSON.parse(localStorage.getItem("driverPos")||"[]"), deferredPrompt=null;
-let buses=JSON.parse(localStorage.getItem("long_buses")||`[{"id":"bus1","op":"Vusi Long","reg":"NP 123-GP","size":45}]`);
-let routes=JSON.parse(localStorage.getItem("long_routes")||`[{"id":"r1","from":"JHB Park","to":"Durban","stops":"Benoni, Newcastle","price":450,"vip":100,"distance":568}]`);
-let bookings=JSON.parse(localStorage.getItem("long_bookings_v10")||localStorage.getItem("long_bookings_v9")||"[]");
-let bank=JSON.parse(localStorage.getItem("bank_details")||`{"name":"FNB","acc":"123456789","branch":"250655","holder":"Vusi Long PTY","vat":"VAT 4123456789"}`);
-let expenses=JSON.parse(localStorage.getItem("expenses")||"{}");
-let payLinks=JSON.parse(localStorage.getItem("pay_links")||"[]");
-let waConfig=JSON.parse(localStorage.getItem("wa_config")||`{"phoneId":"","token":"","template":"bus_ticket_v10","webhook":""}`);
-let waLogs=JSON.parse(localStorage.getItem("wa_logs")||"[]");
-
-// PWA install
-window.addEventListener('beforeinstallprompt', (e)=>{e.preventDefault(); deferredPrompt=e; document.getElementById('installBtn').style.display='inline-block'; document.getElementById('installBtn2').style.display='block'; document.getElementById('apkStatus').innerHTML='✅ Ready to install APK - Click Install button';});
-function installAPK(){if(deferredPrompt){deferredPrompt.prompt(); deferredPrompt.userChoice.then(choice=>{document.getElementById('apkStatus').innerHTML=`Install ${choice.outcome} - Check home screen for V10 Long icon`; deferredPrompt=null;});} else {document.getElementById('apkStatus').innerHTML='To install: Chrome menu (⋮) → Install app / Add to Home Screen - Icon will appear as V10 Long 🚌'; alert('Chrome menu → Install app / Add to Home Screen');}}
-function checkPWA(){let isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone; document.getElementById('apkStatus').innerHTML=isStandalone?'✅ Running as APK (standalone) - Native app mode':'🌐 Running in browser - Install to get APK';}
-
-function init(){
- document.getElementById("opName").value=op; document.getElementById("biz").textContent=op; document.getElementById("depDate").valueAsDate=new Date(); document.getElementById("sarsMonth").value=new Date().toISOString().slice(0,7);
- document.getElementById("bankName") && (document.getElementById("bankName").value=bank.name);
- document.getElementById("payshapId").value=localStorage.getItem("payshapId")||""; document.getElementById("ozowKey").value=localStorage.getItem("ozowKey")||""; document.getElementById("paystackKey").value=localStorage.getItem("paystackKey")||"";
- document.getElementById("waPhoneId").value=waConfig.phoneId; document.getElementById("waToken").value=waConfig.token; document.getElementById("waTemplate").value=waConfig.template; document.getElementById("waWebhook").value=waConfig.webhook;
- checkLic(); setMode(mode); renderBusSel(); renderRouteSel(); renderSeats(); renderRecent(); getGPS(); calcProfit(); renderPayLinks(); renderWAPreview(); renderWALogs(); checkPWA();
- if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(()=>console.log('SW registered')).catch(()=>{});}
-}
-function saveOp(){op=document.getElementById("opName").value||"Operator"; localStorage.setItem("longOp",op); localStorage.setItem("payshapId",document.getElementById("payshapId").value); localStorage.setItem("ozowKey",document.getElementById("ozowKey").value); localStorage.setItem("paystackKey",document.getElementById("paystackKey").value); localStorage.setItem("bank_details",JSON.stringify(bank)); document.getElementById("biz").textContent=op; renderWAPreview();}
-function saveWA(){waConfig={phoneId:document.getElementById("waPhoneId").value,token:document.getElementById("waToken").value,template:document.getElementById("waTemplate").value,webhook:document.getElementById("waWebhook").value}; localStorage.setItem("wa_config",JSON.stringify(waConfig)); alert("WA Business API saved - Auto tickets will use Business API if token present, else wa.me fallback");}
-function checkLic(){isPro=lic.includes("PRO-")||lic==="PRO-2026-VUSI"; document.getElementById("badge").textContent=isPro? mode.toUpperCase()+" V10 ✅" : "FREE 5"; document.getElementById("lic").value=lic;}
-function unlock(){let k=document.getElementById("lic").value.trim(); if(k.includes("PRO-")||k==="PRO-2026-VUSI"){localStorage.setItem("proLicense",k); lic=k; checkLic(); alert("V10 WA Auto APK Unlocked");}}
-function save(){localStorage.setItem("long_buses",JSON.stringify(buses)); localStorage.setItem("long_routes",JSON.stringify(routes)); localStorage.setItem("long_bookings_v10",JSON.stringify(bookings)); localStorage.setItem("appMode",mode); localStorage.setItem("bank_details",JSON.stringify(bank)); localStorage.setItem("expenses",JSON.stringify(expenses)); localStorage.setItem("pay_links",JSON.stringify(payLinks)); localStorage.setItem("wa_config",JSON.stringify(waConfig)); localStorage.setItem("wa_logs",JSON.stringify(waLogs));}
-function showTab(t){['bookTab','payTab','waTab','apkTab','receiptTab','sarsTab'].forEach(id=>{let el=document.getElementById(id+'Tab'); if(el) el.style.display="none";}); let el=document.getElementById(t+'Tab'); if(el) el.style.display="block"; if(t==='pay') renderPayLinks(); if(t==='wa'){renderWAPreview(); renderWALogs();} if(t==='apk') checkPWA(); if(t==='receipt') renderReceiptBookings(); if(t==='sars') genSARS();}
-function setMode(m){mode=m; localStorage.setItem("appMode",m); document.getElementById("ownerBtn").style.background=m==='owner'?'#0A1931':'#fff'; document.getElementById("ownerBtn").style.color=m==='owner'?'#FFD600':'#0A1931'; document.getElementById("driverBtn").style.background=m==='driver'?'#00C27A':'#fff'; document.getElementById("driverBtn").style.color=m==='driver'?'#fff':'#0A1931'; document.getElementById("paxBtn").style.background=m==='passenger'?'#0066FF':'#fff'; document.getElementById("paxBtn").style.color=m==='passenger'?'#fff':'#0A1931'; checkLic(); renderBusSel();}
-function getGPS(){if(!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(p=>{currentGPS=`${p.coords.latitude.toFixed(5)},${p.coords.longitude.toFixed(5)}`; document.getElementById("gpsLabel").textContent=currentGPS; document.getElementById("gpsShow").textContent=currentGPS;});}
-function renderBusSel(){let filtered=buses; if(mode!=='owner'){let code=document.getElementById("driverCode").value.trim(); if(code) filtered=buses.filter(b=>b.reg.toLowerCase().includes(code.toLowerCase())); if(!filtered.length) filtered=buses.slice(0,1);} document.getElementById("busSel").innerHTML=filtered.map(b=>`<option value="${b.id}">${b.op} ${b.reg} (${b.size})</option>`).join(""); renderSeats(); renderPayLinks();}
-document.getElementById("driverCode").addEventListener("input",renderBusSel);
-function renderSeats(){let bus=buses.find(b=>b.id==document.getElementById("busSel").value); if(!bus) return; let date=document.getElementById("depDate").value, routeId=document.getElementById("routeSel").value, busId=document.getElementById("busSel").value; let booked=bookings.filter(b=>b.date==date&&b.busId==busId&&b.routeId==routeId); let el=document.getElementById("seatMap"); el.innerHTML=""; for(let i=1;i<=bus.size;i++){let b=booked.find(x=>x.seat==i); let cls=b? (b.paid?"seat paid": (b.boarded?"seat boarded":"seat booked")) : (selSeat==i?"seat selected":(i<=4?"seat vip":"seat free")); el.innerHTML+=`<div class="${cls}" onclick="pick(${i})">${i}${b&&b.paid?'✓':''}</div>`; if(i%4==0) el.innerHTML+="<br>";}}
-function pick(n){let date=document.getElementById("depDate").value, busId=document.getElementById("busSel").value, routeId=document.getElementById("routeSel").value; if(bookings.find(b=>b.date==date&&b.busId==busId&&b.routeId==routeId&&b.seat==n)) return alert("Booked"); selSeat=n; renderSeats(); updatePrice();}
-function updatePrice(){let r=routes.find(x=>x.id==document.getElementById("routeSel").value); if(!r) return 0; let base=r.price, vip=selSeat&&selSeat<=4?r.vip:0, ins=document.getElementById("insCheck").checked?5:0, tot=base+vip+ins, exVat=tot/1.15, vat=tot-exVat; document.getElementById("priceLabel").textContent=tot.toFixed(0); document.getElementById("priceBreak").textContent=`Base R${base} ${vip?'+VIP':''} ${ins?'+Ins':''} VAT R${vat.toFixed(0)}`; return tot;}
-function renderRouteSel(){document.getElementById("routeSel").innerHTML=routes.map(r=>`<option value="${r.id}">${r.from}→${r.to} R${r.price} ${r.distance}km</option>`).join(""); let r=routes.find(x=>x.id==document.getElementById("routeSel").value); let stops=r?r.stops.split(","):[]; document.getElementById("pPickup").innerHTML=`<option>${r?r.from:''}</option>`+stops.map(s=>`<option>${s.trim()}</option>`).join("")+`<option>${r?r.to:''}</option>`; updatePrice();}
-document.getElementById("busSel").addEventListener("change",renderSeats); document.getElementById("routeSel").addEventListener("change",()=>{renderRouteSel(); renderSeats();}); document.getElementById("insCheck").addEventListener("change",updatePrice); document.getElementById("vatCheck").addEventListener("change",updatePrice);
-function handlePhoto(input){if(!input.files[0]) return; let reader=new FileReader(); reader.onload=e=>{passengerPhoto=e.target.result; document.getElementById("photoPreview").innerHTML=`<img src="${passengerPhoto}" style="width:40px;height:40px;border-radius:50%">`;}; reader.readAsDataURL(input.files[0]);}
-function book(){
- if(!isPro && bookings.length>=5) return alert("Free 5");
- if(!selSeat) return alert("Pick seat");
- let busId=document.getElementById("busSel").value, routeId=document.getElementById("routeSel").value, date=document.getElementById("depDate").value, time=document.getElementById("depTime").value;
- let name=document.getElementById("pName").value.trim(); if(!name) return alert("Name");
- let route=routes.find(r=>r.id==routeId), bus=buses.find(b=>b.id==busId), price=updatePrice(), ins=document.getElementById("insCheck").checked;
- if(bookings.find(b=>b.date==date&&b.busId==busId&&b.routeId==routeId&&b.seat==selSeat)) return alert("Taken");
- let eftRef=`${bus.reg.replace(/\s/g,'')}-${selSeat}-${date.replace(/-/g,'')}`.toUpperCase();
- let qr=`${op.slice(0,3).toUpperCase()}|${date}|${selSeat}|${name.slice(0,6)}|${Date.now()%100000}`;
- let exVat=price/1.15, vat=price-exVat;
- let bk={id:Date.now(),busId,routeId,op:bus.op,reg:bus.reg,busSize:bus.size,from:route.from,to:route.to,date,time,seat:selSeat,name,idNo:document.getElementById("pId").value,phone:document.getElementById("pPhone").value,pickup:document.getElementById("pPickup").value,bags:document.getElementById("pBags").value,price,exVat,vat,ins,paid:false,eftRef,qr,boarded:false,mode,receiptNo:`REC-${Date.now()%1000000}`,gps:currentGPS,photo:passengerPhoto,created:Date.now()};
- bookings.push(bk); lastBooking=bk; save(); renderSeats(); renderRecent(); renderPayLinks(); renderWAPreview(); calcProfit(); document.getElementById("qrPreview").innerHTML=""; new QRCode(document.getElementById("qrPreview"),{text:qr,width:70,height:70}); selSeat=null; passengerPhoto=""; document.getElementById("photoPreview").innerHTML=""; document.getElementById("pName").value=""; alert(`✅ Seat ${bk.seat} R${price} Ref ${eftRef} - Go to PAY tab then WA auto ticket`);
-}
-function renderRecent(){document.getElementById("recent").innerHTML=`<h4>Recent (${bookings.length})</h4>`+bookings.slice(-5).reverse().map(b=>`<div class="row"><span>Seat ${b.seat} ${b.name} R${b.price} ${b.paid?'PAID ✅ '+b.payMethod:'UNPAID ❌'} Ref ${b.eftRef}</span><button class="btn btn-r" onclick="delBook(${b.id})">x</button></div>`).join("");}
-function delBook(id){bookings=bookings.filter(b=>b.id!=id); save(); renderSeats(); renderRecent(); renderPayLinks();}
-function renderPayLinks(){
- let filtered=bookings.slice(-10).reverse();
- document.getElementById("payshapDetails").innerHTML=filtered.length? `Seat ${filtered[0].seat} ${filtered[0].name} R${filtered[0].price} Ref ${filtered[0].eftRef}` : "Book first";
- document.getElementById("ozowDetails").innerHTML=filtered.length? `Seat ${filtered[0].seat} R${filtered[0].price}` : "Book first";
- document.getElementById("paystackDetails").innerHTML=filtered.length? `Seat ${filtered[0].seat} R${filtered[0].price}` : "Book first";
- document.getElementById("payLinks").innerHTML=payLinks.slice(-8).reverse().map(l=>`<div class="row"><span><b>${l.method}</b> Seat ${l.seat} ${l.name} R${l.amount} Ref ${l.ref} <a href="${l.link}" target="_blank" style="background:#00C27A;color:#fff;padding:3px 8px;border-radius:12px;text-decoration:none">Pay</a> ${l.paid?'PAID ✅':`<span style="background:#FFD600;padding:2px 6px;border-radius:8px">AWAIT</span>`}</span><div><button class="btn btn-g" onclick="simulatePaid('${l.id}')">Sim Paid + Auto WA</button><button class="btn-wa" onclick="waPayLink('${l.id}')">WA Link</button></div></div>`).join("")||"No pay links - Create PayShap/Ozow";
- document.getElementById("autoPaidList").innerHTML=bookings.filter(b=>b.paid).slice(-6).reverse().map(b=>`<div class="row"><span>✅ Seat ${b.seat} ${b.name} R${b.price} ${b.payMethod} PAID ${b.receiptNo}</span></div>`).join("")||"";
-}
-function createPayshap(){let b=bookings[bookings.length-1]; if(!b) return alert("Book first"); let id=document.getElementById("payshapId").value||b.phone||"07"; let link=`https://payshap.co.za/request?phone=${id}&amount=${b.price}&ref=${b.eftRef}`; let pl={id:Date.now()+"",method:"PayShap",seat:b.seat,name:b.name,amount:b.price,ref:b.eftRef,link,bookingId:b.id,paid:false,created:Date.now()}; payLinks.push(pl); save(); renderPayLinks(); document.getElementById("payshapQR").innerHTML=""; new QRCode(document.getElementById("payshapQR"),{text:link,width:70,height:70});}
-function createOzow(){let b=bookings[bookings.length-1]; if(!b) return; let link=`https://pay.ozow.com/demo?amount=${b.price}&ref=${b.eftRef}`; let pl={id:Date.now()+"",method:"Ozow",seat:b.seat,name:b.name,amount:b.price,ref:b.eftRef,link,bookingId:b.id,paid:false}; payLinks.push(pl); save(); renderPayLinks(); document.getElementById("ozowQR").innerHTML=""; new QRCode(document.getElementById("ozowQR"),{text:link,width:70,height:70});}
-function createPaystack(){let b=bookings[bookings.length-1]; if(!b) return; let link=`https://paystack.com/pay/${b.eftRef.toLowerCase()}-${b.price}`; let pl={id:Date.now()+"",method:"Paystack",seat:b.seat,name:b.name,amount:b.price,ref:b.eftRef,link,bookingId:b.id,paid:false}; payLinks.push(pl); save(); renderPayLinks(); document.getElementById("paystackQR").innerHTML=""; new QRCode(document.getElementById("paystackQR"),{text:link,width:70,height:70});}
-function simulatePaid(id){
- let pl=payLinks.find(p=>p.id==id)||payLinks.slice(-1)[0]; if(!pl) return; pl.paid=true; let b=bookings.find(x=>x.id==pl.bookingId); if(b){b.paid=true; b.payMethod=pl.method; b.paidAmount=pl.amount; b.paidTime=new Date().toISOString(); save(); renderPayLinks(); renderRecent(); renderWAPreview(); renderReceiptBookings(); // AUTO WA TICKET
-  if(document.getElementById("waAutoCheck").checked){sendWAAutoForBooking(b);} alert(`✅ AUTO PAID ${pl.method} Seat ${b.seat} R${pl.amount} - Auto WA ticket sent!`); if(navigator.vibrate) navigator.vibrate([200,100,200]);}
-}
-function simulatePayshapPaid(){simulatePaid(payLinks.filter(p=>p.method==='PayShap').slice(-1)[0]?.id||payLinks.slice(-1)[0]?.id);}
-function simulateOzowPaid(){simulatePaid(payLinks.filter(p=>p.method==='Ozow').slice(-1)[0]?.id||payLinks.slice(-1)[0]?.id);}
-function simulatePaystackPaid(){simulatePaid(payLinks.filter(p=>p.method==='Paystack').slice(-1)[0]?.id||payLinks.slice(-1)[0]?.id);}
-function waPayLink(id){let pl=payLinks.find(p=>p.id==id); if(!pl) return; let msg=`*${op} Payment Link*%0ASeat ${pl.seat} ${pl.name} R${pl.amount}%0ARef ${pl.ref}%0APay: ${pl.link}%0AAuto confirms + ticket`; window.open(`https://wa.me/?text=${encodeURIComponent(msg.replace(/%0A/g,"\n"))}`,'_blank');}
-
-// WA BUSINESS API
-function renderWAPreview(){
- let b=bookings.length? bookings[bookings.length-1] : {name:"Thabo",seat:5,from:"JHB",to:"Durban",date:new Date().toISOString().slice(0,10),time:"18:00",reg:"NP 123-GP",price:450,eftRef:"NP123-GP-5-20261018",qr:"VUS|2026-10-18|5|Thabo|12345",gps:currentGPS||"-26.123,28.456",phone:"277...",receiptNo:"REC-123456"};
- let msg=`*${op} - BUS TICKET CONFIRMED*%0A✅ PAID ${b.payMethod||'PayShap'} R${b.price}%0A%0A🧑 Passenger: ${b.name}%0A🚌 Bus: ${b.reg} Seat ${b.seat}%0A📍 Route: ${b.from} → ${b.to}%0A📅 Date: ${b.date} ${b.time}%0A📍 Pickup: ${b.pickup||b.from}%0A%0A🎫 QR: ${b.qr}%0A🧾 Receipt: ${b.receiptNo}%0A💰 Ref: ${b.eftRef}%0A%0A📍 Live Track: https://maps.google.com/?q=${b.gps}%0A%0A🛡️ Insurance: ${b.ins?'Yes R5':''}%0A%0AThank you - ${op}%0AShow QR at boarding`;
- document.getElementById("waPreview").innerHTML=msg.replace(/%0A/g,"<br>");
- return msg;
-}
-function sendWATest(){
- let phone=document.getElementById("waTestPhone").value||bookings[bookings.length-1]?.phone||"277"; phone=phone.replace(/\D/g,'');
- let msg=renderWAPreview();
- window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg.replace(/%0A/g,"\n"))}`,'_blank');
- waLogs.push({id:Date.now(),phone,msg:msg.slice(0,200),time:new Date().toISOString(),type:"wa.me fallback"}); save(); renderWALogs();
-}
-function sendWAAuto(){
- let b=bookings[bookings.length-1]; if(!b) return alert("Book first");
- sendWAAutoForBooking(b);
-}
-function sendWAAutoForBooking(b){
- let phone=(b.phone||"").replace(/\D/g,''); if(phone.startsWith("0")) phone="27"+phone.slice(1); if(!phone) phone=document.getElementById("waTestPhone").value.replace(/\D/g,'');
- let msg=`*${op} - TICKET CONFIRMED*%0A✅ PAID ${b.payMethod||'PayShap'} R${b.price}%0ASeat ${b.seat} ${b.name}%0A${b.from}→${b.to} ${b.date} ${b.time} Bus ${b.reg}%0AQR ${b.qr} Receipt ${b.receiptNo} Ref ${b.eftRef}%0ALive Track https://maps.google.com/?q=${b.gps}%0AThanks ${op}`;
- // If WA Business API token present, call API
- if(waConfig.token && waConfig.phoneId){
-  // Real WA Business API call (would need backend, demo simulates)
-  fetch(`https://graph.facebook.com/v18.0/${waConfig.phoneId}/messages`,{
-   method:"POST",
-   headers:{"Authorization":`Bearer ${waConfig.token}`,"Content-Type":"application/json"},
-   body:JSON.stringify({messaging_product:"whatsapp",to:phone,type:"text",text:{body:msg.replace(/%0A/g,"\n")}})
-  }).then(r=>r.json()).then(data=>{
-   waLogs.push({id:Date.now(),phone,msg:msg.slice(0,200),time:new Date().toISOString(),type:"WA Business API",response:JSON.stringify(data).slice(0,200)}); save(); renderWALogs(); alert("WA Business API sent - Check logs");
-  }).catch(e=>{
-   // fallback
-   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg.replace(/%0A/g,"\n"))}`,'_blank');
-   waLogs.push({id:Date.now(),phone,msg:msg.slice(0,200),time:new Date().toISOString(),type:"WA Business API fallback wa.me",error:e.message}); save(); renderWALogs();
-  });
- } else {
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg.replace(/%0A/g,"\n"))}`,'_blank');
-  waLogs.push({id:Date.now(),phone,msg:msg.slice(0,200),time:new Date().toISOString(),type:"wa.me auto ticket"}); save(); renderWALogs();
- }
- // Also notify driver
- let driverPhone=document.getElementById("waTestPhone").value||""; // driver phone
- if(driverPhone){
-  let driverMsg=`*NEW BOOKING ${op}*%0ASeat ${b.seat} ${b.name} ${b.phone} R${b.price} PAID ${b.payMethod} Ref ${b.eftRef} QR ${b.qr}`;
-  // could send to driver too
- }
-}
-function renderWALogs(){
- document.getElementById("waLog").innerHTML=waLogs.slice(-5).reverse().map(l=>`<div style="border-bottom:1px solid #ddd;padding:2px 0"><b>${l.type}</b> ${l.phone} ${new Date(l.time).toLocaleTimeString()}<br>${l.msg.slice(0,100)}</div>`).join("")||"No WA yet";
- document.getElementById("waSentList").innerHTML=waLogs.slice(-10).reverse().map(l=>`<div class="row"><span>${l.type} ${l.phone} ${new Date(l.time).toLocaleTimeString()} ${l.msg.slice(0,60)}</span></div>`).join("")||"No WA sent";
-}
-function renderReceiptBookings(){let sel=document.getElementById("receiptBookingSel"); if(!sel) return; sel.innerHTML=bookings.filter(b=>b.paid).slice(-10).reverse().map(b=>`<option value="${b.id}">Seat ${b.seat} ${b.name} R${b.price} ${b.receiptNo}</option>`).join(""); let b=bookings.find(x=>x.id==sel.value); if(b) document.getElementById("receiptPreview").innerHTML=`<b>${bank.holder} TAX INVOICE ${b.receiptNo}</b><br>${b.name} Seat ${b.seat} R${b.price} Paid ${b.payMethod} Ref ${b.eftRef} QR ${b.qr}`;}
-function genReceiptPDF(){let id=document.getElementById("receiptBookingSel").value; let b=bookings.find(x=>x.id==id); if(!b) return; const {jsPDF}=window.jspdf; let doc=new jsPDF(); doc.text(`${bank.holder} RECEIPT ${b.receiptNo} Seat ${b.seat} ${b.name} R${b.price} Paid ${b.payMethod}`,10,15); doc.save(`${b.receiptNo}.pdf`);}
-function genSARS(){let month=document.getElementById("sarsMonth").value; if(!month) return; let list=bookings.filter(b=>b.date.startsWith(month)&&b.paid); let income=list.reduce((a,b)=>a+b.price,0), vat=list.reduce((a,b)=>a+b.vat,0); let trips=new Set(list.map(b=>b.date)).size||1; let fuel=(568/3*23)*trips, totalExp=fuel+600*trips, profit=income-totalExp; document.getElementById("sarsSummary").innerHTML=`Pax ${list.length} Income R${income} VAT R${vat.toFixed(0)}`; document.getElementById("sarsBreak").innerHTML=`Income R${income} Cost R${totalExp.toFixed(0)} Profit R${profit.toFixed(0)}`; document.getElementById("vatCalc").innerHTML=`VAT Payable R${(vat - totalExp*0.15/1.15).toFixed(2)}`; expenses[month]={income,vat,totalExp,profit,pax:list.length}; save();}
-function pdfSARS(){let month=document.getElementById("sarsMonth").value; let exp=expenses[month]; if(!exp) return; const {jsPDF}=window.jspdf; let doc=new jsPDF(); doc.text(`SARS ${month} Income R${exp.income} VAT R${exp.vat} Profit R${exp.profit}`,10,15); doc.save(`SARS_${month}.pdf`);}
-function csvSARS(){let month=document.getElementById("sarsMonth").value; let list=bookings.filter(b=>b.date.startsWith(month)&&b.paid); let csv="Date,Receipt,Seat,Name,Price,VAT,PayMethod,Ref\n"; list.forEach(b=>{csv+=`${b.date},${b.receiptNo},${b.seat},${b.name},${b.price},${b.vat.toFixed(2)},${b.payMethod},${b.eftRef}\n`;}); let blob=new Blob([csv],{type:"text/csv"}),a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`SARS_${month}.csv`; a.click();}
-function calcProfit(){let dist=parseFloat(document.getElementById("fuelDist")?.value)||568, priceL=parseFloat(document.getElementById("fuelPrice")?.value)||23, cons=parseFloat(document.getElementById("fuelCons")?.value)||3, paxPrice=parseFloat(document.getElementById("profitPrice")?.value)||450, toll=parseFloat(document.getElementById("profitToll")?.value)||600; let fuelCost=(dist/cons)*priceL; let date=document.getElementById("depDate").value; let list=bookings.filter(b=>b.date==date); let pax=list.length||45; let income=pax*paxPrice; let totalCost=fuelCost+toll; let profit=income-totalCost; let el=document.getElementById("profitResult"); if(el) el.innerHTML=`Profit R${profit.toFixed(0)}`; let el2=document.getElementById("profitBreak"); if(el2) el2.innerHTML=`Fuel R${fuelCost.toFixed(0)} Toll R${toll} Income R${income} Profit R${profit.toFixed(0)}`;}
-
-init();
+const ROUTES = [
+ {id:"JHB-DUR",from:"JHB Park",to:"Durban",price:560,km:570,time:"6h30",toll:250,stops:["Heidelberg","Harrismith","Mooi River"]},
+ {id:"JHB-CPT",from:"JHB Park",to:"Cape Town",price:1250,km:1400,time:"14h",toll:350,stops:["Bloemfontein","Beaufort West","Laingsburg"]},
+ {id:"JHB-PE",from:"JHB Park",to:"Port Elizabeth / Gqeberha",price:980,km:1000,time:"10h30",toll:300,stops:["Bloem","Cradock"]},
+ {id:"JHB-LSK",from:"JHB Park",to:"Lusikisiki",price:950,km:950,time:"10h",toll:280,stops:["Durban","Port Shepstone"]},
+ {id:"JHB-PLK",from:"JHB Park",to:"Polokwane",price:350,km:280,time:"3h30",toll:80,stops:["Hammanskraal"]},
+ {id:"JHB-MBM",from:"JHB Park",to:"Nelspruit / Mbombela",price:380,km:330,time:"4h",toll:120,stops:["Machadodorp"]},
+ {id:"JHB-RST",from:"JHB Park",to:"Rustenburg",price:280,km:120,time:"2h",toll:60,stops:["Brits"]},
+ {id:"JHB-BFN",from:"JHB Park",to:"Bloemfontein",price:450,km:400,time:"4h30",toll:150,stops:["Kroonstad"]},
+ {id:"JHB-GIY",from:"JHB Park",to:"Giyani",price:420,km:530,time:"6h",toll:110,stops:["Polokwane","Mooketsi"]},
+ {id:"JHB-MAL",from:"JHB Park",to:"Malamulele",price:450,km:560,time:"6h30",toll:120,stops:["Giyani","Malamelele"]},
+ {id:"JHB-THO",from:"JHB Park",to:"Thohoyandou",price:480,km:520,time:"6h15",toll:115,stops:["Louis Trichardt","Thohoyandou"]},
+ {id:"JHB-TZA",from:"JHB Park",to:"Tzaneen",price:400,km:420,time:"5h",toll:95,stops:["Polokwane","Mooketsi","Tzaneen"]},
+];
+let selectedRoute = ROUTES[8];
+let selectedSeat = null;
+let bookings = JSON.parse(localStorage.getItem("v10bookings")||"[]");
+if(bookings.length==0){bookings=[{seat:6,route:"JHB Park → Giyani",pax:"Demo Booked",phone:"27...",paid:true,time:new Date().toLocaleString(),price:420},{seat:7,route:"JHB Park → Giyani",pax:"Demo Booked",phone:"27...",paid:true,time:new Date().toLocaleString(),price:420}];save();}
+function save(){localStorage.setItem("v10bookings",JSON.stringify(bookings));render();}
+function saveOp(){localStorage.setItem("longOp",document.getElementById("opInput").value);document.getElementById("opName").innerText=document.getElementById("opInput").value;}
+function calcRoute(r){let litres=(r.km*35/100);let fuelCost=Math.round(litres*21.5);let totalCost=fuelCost+r.toll+800;let revenue=r.price*45;let profit=revenue-totalCost;return{litres,fuelCost,totalCost,revenue,profit};}
+function renderRoutes(){let h="";ROUTES.forEach(r=>{let active=selectedRoute.id==r.id?"active":"";let c=calcRoute(r);h+=`<div class="route-card ${active}" onclick="pickRoute('${r.id}')"><b>${r.from} → ${r.to}</b><br><span class="badge">R${r.price}</span><span class="badge">${r.km}km</span><span class="badge">${r.time}</span><span class="badge-gold badge">Profit R${c.profit}</span><br><small>Stops: ${r.stops.join(", ")} • Toll R${r.toll} • Fuel R${c.fuelCost}</small></div>`;});document.getElementById("routeList").innerHTML=h;document.getElementById("paxFromTo").value=selectedRoute.from+" → "+selectedRoute.to+" R"+selectedRoute.price;let cc=calcRoute(selectedRoute);document.getElementById("routeCalc").innerHTML=`⛽ <b>${selectedRoute.to} Calculator:</b> ${selectedRoute.km}km = ${cc.litres.toFixed(1)}L x R21.5 = <b>R${cc.fuelCost}</b> | Toll R${selectedRoute.toll} | Driver R800 | Total R${cc.totalCost} | Revenue 45xR${selectedRoute.price}=R${cc.revenue} | <b style="color:green">PROFIT R${cc.profit}</b>`;}
+function pickRoute(id){selectedRoute=ROUTES.find(x=>x.id==id);renderRoutes();renderSeats();}
+function renderSeats(){let h="";for(let i=1;i<=45;i++){let booked=bookings.find(b=>b.seat==i && b.route.includes(selectedRoute.to));let cls=booked?"booked":(selectedSeat==i?"selected":"free");h+=`<div class="seat ${cls}" onclick="pickSeat(${i})">${i}</div>`;}document.getElementById("seatGrid").innerHTML=h;}
+function pickSeat(n){let booked=bookings.find(b=>b.seat==n && b.route.includes(selectedRoute.to));if(booked) return alert("Seat "+n+" already booked!");selectedSeat=n;renderSeats();}
+function clearSel(){selectedSeat=null;renderSeats();}
+function bookSeat(){if(!selectedSeat) return alert("Pick seat!");let name=document.getElementById("paxName").value||"Passenger";let phone=document.getElementById("paxPhone").value||"27780233263";let b={seat:selectedSeat,route:selectedRoute.from+" → "+selectedRoute.to,pax:name,phone:phone,price:selectedRoute.price,paid:false,time:new Date().toLocaleString(),km:selectedRoute.km};bookings.push(b);save();document.getElementById("payInfo").innerHTML=`<b>${name} Seat ${selectedSeat} ${b.route} R${b.price}</b><br>PayShap link generated`;document.getElementById("payLink").value=`https://payshap.pay/${selectedRoute.id}/R${b.price}/Seat${selectedSeat}/${Date.now()}`;tab('pay');}
+function copyPay(){navigator.clipboard.writeText(document.getElementById("payLink").value);alert("Link copied!");}
+function sendWA(){let link=document.getElementById("payLink").value;let msg=`*MAKHANANI LOGISTICS - Ticket*\nRoute: ${selectedRoute.from} → ${selectedRoute.to} R${selectedRoute.price}\nSeat: ${selectedSeat}\nPay: ${link}`;window.open("https://wa.me/"+document.getElementById("paxPhone").value.replace(/[^0-9]/g,"")+"?text="+encodeURIComponent(msg));}
+function simPaid(){let last=bookings[bookings.length-1];last.paid=true;save();document.getElementById("ticketBox").innerHTML=`<b>✅ PAID CONFIRMED</b><br>Operator: ${document.getElementById("opInput").value}<br>Pax: ${last.pax}<br>Route: ${last.route} Seat ${last.seat} R${last.price}<br>QR: [MAKHANANI-${last.seat}-${Date.now()}]<br><button class="btn" onclick="window.print()">Print Ticket</button>`;document.getElementById("ticketBox").classList.remove("hidden");render();}
+function tab(id){document.querySelectorAll('[id^="t-"]').forEach(e=>e.classList.add("hidden"));document.getElementById("t-"+id).classList.remove("hidden");document.querySelectorAll(".tabs button").forEach(b=>{b.classList.remove("active");if(b.getAttribute("onclick").includes(id)) b.classList.add("active")});if(id=="owner"||id=="driver") renderOwner();}
+function renderOwner(){let rev=0;bookings.forEach(b=>{if(b.paid) rev+=b.price});document.getElementById("totalRev").innerText="R"+rev;let profitEst=0;bookings.forEach(b=>{if(b.paid){let r=ROUTES.find(x=>b.route.includes(x.to));if(r){let c=calcRoute(r);profitEst+=c.profit/45;}}});document.getElementById("totalProfit").innerText="R"+Math.round(profitEst);document.getElementById("totalSeats").innerText=bookings.length+"/360";let ot="<tr><th>Time</th><th>Pax</th><th>Route</th><th>Seat</th><th>Paid</th></tr>";bookings.slice().reverse().forEach(b=>{ot+=`<tr><td>${b.time}</td><td>${b.pax}</td><td>${b.route}</td><td>${b.seat}</td><td>${b.paid?'✅':'⏳'}</td></tr>`});document.getElementById("ownerTable").innerHTML=ot;document.getElementById("drvTable").innerHTML=ot;}
+function startTrip(){let r=selectedRoute;let c=calcRoute(r);alert(`🚌 MAKHANANI LOGISTICS - TRIP STARTED\n\nBus: ${document.getElementById("busReg").value}\nDriver: ${document.getElementById("drvName").value}\nRoute: ${r.from} → ${r.to}\nDistance: ${r.km}km • Time: ${r.time}\nStops: ${r.stops.join(", ")}\n\n⛽ FUEL: ${c.litres.toFixed(1)}L x R21.5 = R${c.fuelCost}\n🛣️ TOLL (N1): R${r.toll} [Pumulani R27, Carousel R33, Kranskop R42, Nyl R48]\n👨‍✈️ Driver: R800\n💰 Total Cost: R${c.totalCost}\n\n🎫 Revenue 45xR${r.price} = R${c.revenue}\n✅ PROFIT = R${c.profit}\n\n✅ Offline mode active`);}
+function calcSARS(){let vat=parseInt(document.getElementById("vat").value)||15;let rev=0,fuelTotal=0,tollTotal=0;bookings.forEach(b=>{if(b.paid){rev+=b.price;let route=ROUTES.find(r=>b.route.includes(r.to));if(route){fuelTotal+=Math.round(route.km*35/100*21.5)/45;tollTotal+=route.toll/45;}}});let vatAmt=Math.round(rev*vat/115);let profit=rev-Math.round(fuelTotal)-Math.round(tollTotal)-800;document.getElementById("sarsBox").innerHTML=`<b>SARS VAT Report - MAKHANANI LOGISTICS</b><br>Total Incl: R${rev}<br>VAT ${vat}%: R${vatAmt}<br>Excl VAT: R${rev-vatAmt}<br>⛽ Fuel Total: R${Math.round(fuelTotal)}<br>🛣️ Toll Total (N1): R${Math.round(tollTotal)}<br>✅ Net Profit: R${profit}<br>Routes: ${ROUTES.length} (incl 4 Limpopo)<br>`;document.getElementById("sarsBox").classList.remove("hidden");}
+function exportCSV(){let csv="time,pax,route,seat,price,paid,km,toll,fuel\n";bookings.forEach(b=>{let r=ROUTES.find(x=>b.route.includes(x.to));csv+=`${b.time},${b.pax},${b.route},${b.seat},${b.price},${b.paid},${r?r.km:''},${r?r.toll:''},${r?Math.round(r.km*35/100*21.5):''}\n`;});let blob=new Blob([csv],{type:"text/csv"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="makhanani_bookings_fuel_toll.csv";a.click();}
+let savedOp=localStorage.getItem("longOp");if(savedOp){document.getElementById("opInput").value=savedOp;document.getElementById("opName").innerText=savedOp;}renderRoutes();renderSeats();renderOwner();if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 </script>
 </body>
 </html>
